@@ -40,21 +40,23 @@ def probabilistic_classification(first_probability, first_vector, second_vector)
     return first_function, second_function
 
 
-def get_intercetion_point(first_func, second_func, interval, step):
-    start, stop = interval
-    assert start < stop
-    arange = list(np.arange(start, stop, step))
-    return min(((x, abs(first_func(x) - second_func(x))) for x in arange), key=lambda x: x[1])[0]
-
-
 def get_interval(first_vector, second_vector):
     all_points = first_vector + second_vector
     return min(all_points), max(all_points)
 
 
-def get_area(function, interval, step):
+def get_areas(first_function, second_function, interval, step):
     start, stop = interval
     assert start < stop
+    detection_error = 0
+    false_positive = 0
     arange = list(np.arange(start, stop, step))
-    return sum((step*function(x) for x in arange))
+    for x in arange:
+        first_function_value = first_function(x)
+        second_function_value = second_function(x)
+        if second_function_value < first_function_value:
+            detection_error += second_function_value * step
+        else:
+            false_positive += first_function_value * step
+    return detection_error, false_positive
  
