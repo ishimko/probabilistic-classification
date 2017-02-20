@@ -4,32 +4,38 @@ from math import pi
 import numpy as np
 
 
-def get_gauss_randomizer(mean, deviation):
+class GaussParameters:
+    def __init__(self, mean, deviation):
+        self.mean = mean
+        self.deviation = deviation
+
+
+def get_gauss_randomizer(gauss_parameters):
     def gauss_randomizer(count):
         for _ in range(count):
-            yield gauss(mean, deviation)
+            yield gauss(gauss_parameters.mean, gauss_parameters.deviation)
     return gauss_randomizer
 
 
-def get_gaussian(mean, deviation):
+def get_gaussian(params):
     def gaussian(x):
-        return 1/(deviation * np.sqrt(2*pi)) * np.exp(-0.5*((x - mean)/deviation)**2)
+        return 1/(params.deviation*np.sqrt(2*pi))*np.exp(-0.5*((x-params.mean)/params.deviation)**2)
     return gaussian
 
 
 def get_probability_density_function(vector, probability):
-    gaussian = get_gaussian(count_mean(vector), count_deviation(vector))
+    gaussian = get_gaussian(GaussParameters(count_mean(vector), count_deviation(vector)))
     return lambda x: gaussian(x) * probability
 
 
-def get_random_vector(mean, deviation, count):
-    randomizer = get_gauss_randomizer(mean, deviation)
+def get_random_vector(gauss_parameters, count):
+    randomizer = get_gauss_randomizer(gauss_parameters)
     return list(randomizer(count))
 
 
-def generate_vectors(first_mean, first_deviation, second_mean, second_deviation, count):
-    first_vector = get_random_vector(first_mean, first_deviation, count)
-    second_vector = get_random_vector(second_mean, second_deviation, count)
+def generate_vectors(first_gauss_parameters, second_gauss_parameters, count):
+    first_vector = get_random_vector(first_gauss_parameters, count)
+    second_vector = get_random_vector(second_gauss_parameters, count)
     return first_vector, second_vector
 
 

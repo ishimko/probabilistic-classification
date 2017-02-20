@@ -1,6 +1,6 @@
 from sys import argv
 from probabilistic_classification import generate_vectors, get_interval, \
-    probabilistic_classification, get_areas
+    probabilistic_classification, get_areas, GaussParameters
 from drawer import draw_plots
 
 
@@ -16,11 +16,9 @@ def print_result(detection_error, false_positive):
 
 def main():
     first_probability = float(argv[1])
-    first_mean = float(argv[2])
-    first_deviation = float(argv[3])
-    second_mean = float(argv[4])
-    second_deviation = float(argv[5])
-    vectors = generate_vectors(first_mean, first_deviation, second_mean, second_deviation, NUMBERS_COUNT)
+    first_gauss_parameters = GaussParameters(float(argv[2]), float(argv[3]))
+    second_gauss_parameters = GaussParameters(float(argv[4]), float(argv[5]))
+    vectors = generate_vectors(first_gauss_parameters, second_gauss_parameters, NUMBERS_COUNT)
     first_vector, second_vector = vectors
     interval = get_interval(first_vector, second_vector)
     functions = probabilistic_classification(first_probability, first_vector, second_vector)
