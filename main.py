@@ -8,10 +8,12 @@ STEP = 0.001
 NUMBERS_COUNT = 10000
 
 
-def print_result(detection_error, false_positive):
-    print('Вероятность ложной тревоги для 1-го класса: {}'.format(detection_error))
-    print('Вероятность пропуска обнаружения для 1-го класса: {}'.format(false_positive))
-    print('Вероятность суммарной ошибки классификации: {}'.format(detection_error + false_positive))
+def create_annotation(detection_error, false_positive):
+    detection_error_str = '{0:.2f}%'.format(detection_error*100)
+    false_positive_str = '{0:.2f}%'.format(false_positive*100)
+    summary_error_str = '{0:.2f}%'.format((false_positive+detection_error)*100)
+    return '$P_{л.т.}=$' + detection_error_str + '\n$P_{п.о.}=$' + false_positive_str + \
+        '\n$P_{о.}=$' + summary_error_str
 
 
 def main():
@@ -24,8 +26,8 @@ def main():
     functions = probabilistic_classification(first_probability, first_vector, second_vector)
     first_function, second_function = functions
     detection_error, false_positive = get_areas(first_function, second_function, interval, STEP)
-    print_result(detection_error, false_positive)
-    draw_plots(first_function, second_function, interval, STEP)
+    annotation = create_annotation(detection_error, false_positive)
+    draw_plots(first_function, second_function, interval, STEP, annotation)
 
 
 if __name__ == '__main__':
