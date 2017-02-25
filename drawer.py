@@ -12,9 +12,8 @@ def draw_plots(first_function, second_function, interval, step, annotation):
     plt.plot(arange, first_function(arange), label=FIRST_FUNCTION_LABEL)
     plt.plot(arange, second_function(arange), label=SECOND_FUNCTION_LABEL)
     y1 = first_function(arange)
-    y2 = second_function(arange)    
+    y2 = second_function(arange)
     axis = plt.axes()
-    # plt.text(interval_start, axis.get_ylim()[1]/2, "kekekeke")
     axis.text(interval_start, axis.get_ylim()[1]/2, annotation, style='italic',
         bbox={'facecolor':'green', 'alpha':0.5, 'pad':10}, fontsize=12)
     axis.fill_between(arange, 0, y1, where=y2 >= y1, label=LEFT_AREA_LABEL)
